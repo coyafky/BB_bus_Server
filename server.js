@@ -23,6 +23,9 @@ async function connectToDatabase() {
   }
 }
 
+// 在应用启动时连接数据库
+connectToDatabase().catch(console.error);
+
 app.get('/cities', async (req, res) => {
   try {
     if (!db) {
@@ -36,9 +39,10 @@ app.get('/cities', async (req, res) => {
     const cursor = collection.find(query, options);
     const result = await cursor.toArray();
 
+    console.log('Fetched cities:', result);
     res.json(result);
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching cities:', error);
     res.status(500).send('Server Error');
   }
 });
@@ -57,9 +61,10 @@ app.get('/routes', async (req, res) => {
     const cursor = collection.find(query, options);
     const result = await cursor.toArray();
 
+    console.log('Fetched routes:', result);
     res.json(result);
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching routes:', error);
     res.status(500).send('Server Error');
   }
 });
