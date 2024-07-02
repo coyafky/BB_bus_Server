@@ -3,21 +3,32 @@ import { MongoClient } from 'mongodb';
 import cors from 'cors';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // 启用 CORS 中间件
 app.use(cors());
 
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
+let db;
 
-const uri = process.env.MONGODB_URI 
-const client = new MongoClient(uri);
+async function connectToDatabase() {
+  try {
+    await client.connect();
+    db = client.db('BB_bus'); // 替换为你的数据库名称
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+  }
+}
 
 app.get('/cities', async (req, res) => {
   try {
-    await client.connect();
-    const database = client.db('BB_bus'); // 替换为你的数据库名称
-    const collection = database.collection('cities'); // 替换为你的集合名称
+    if (!db) {
+      await connectToDatabase();
+    }
+    const collection = db.collection('cities'); // 替换为你的集合名称
 
     const query = {}; // 你可以根据需要添加查询条件
     const options = {}; // 你可以根据需要添加查询选项
@@ -29,16 +40,15 @@ app.get('/cities', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
-  } finally {
-    await client.close();
   }
 });
 
 app.get('/routes', async (req, res) => {
   try {
-    await client.connect();
-    const database = client.db('BB_bus'); // 替换为你的数据库名称
-    const collection = database.collection('routes'); // 替换为你的集合名称
+    if (!db) {
+      await connectToDatabase();
+    }
+    const collection = db.collection('routes'); // 替换为你的集合名称
 
     let query = {};
 
@@ -51,8 +61,6 @@ app.get('/routes', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
-  } finally {
-    await client.close();
   }
 });
 
