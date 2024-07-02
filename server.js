@@ -10,7 +10,7 @@ app.use(cors());
 
 
 
-const uri = process.env.MONGODB_URI || 'mongodb+srv://coya20020824:w17wquMkSMYO8A61@cluster0.xwpbb0f.mongodb.net/';; // MongoDB 连接字符串
+const uri = process.env.MONGODB_URI 
 const client = new MongoClient(uri);
 
 app.get('/cities', async (req, res) => {
