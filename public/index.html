@@ -26,12 +26,29 @@
 </head>
 <body>
     <h1>BB Bus Server Data</h1>
-    <ul>
-        <li>City: New York</li>
-        <li>City: Los Angeles</li>
-        <li>City: Chicago</li>
-        <li>City: Houston</li>
-        <li>City: Phoenix</li>
+    <ul id="data-list">
+        <!-- 数据将在这里动态加载 -->
     </ul>
+
+    <script>
+        // 在这里编写你的 JavaScript
+        async function fetchData() {
+            try {
+                const response = await fetch('/cities'); // 替换为你的 API 路径
+                const data = await response.json();
+                const dataList = document.getElementById('data-list');
+
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = `City: ${item.name}`; // 假设数据结构中有一个 name 字段
+                    dataList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchData();
+    </script>
 </body>
 </html>
