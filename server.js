@@ -8,6 +8,12 @@ const port = process.env.PORT || 3000;
 // 启用 CORS 中间件
 app.use(cors());
 
+
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+  });
+  
+
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
