@@ -1,10 +1,11 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import cors from 'cors';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs'; // 使用 bcryptjs 替代 bcrypt
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import serverless from 'serverless-http';
 
 dotenv.config(); // 加载 .env 文件
 
@@ -149,7 +150,7 @@ app.post('/login', async (req, res) => {
     if (!db) {
       await connectToDatabase();
     }
-    const collection = db.collection('users'); // 替换为你的集合名称
+    const collection = db.collection('user'); // 替换为你的集合名称
 
     const { username, password } = req.body;
 
