@@ -15,10 +15,11 @@ const port = process.env.PORT || 3000;
 // 启用 CORS 中间件
 app.use(
   cors({
-    origin: 'http://localhost:3000', // 允许的源
+    origin: '*', // 允许任意源
     credentials: true, // 允许发送 cookies
   })
 );
+
 app.use(express.json()); // 解析 JSON 请求体
 app.use(express.urlencoded({ extended: true })); // 解析 x-www-form-urlencoded 请求体
 app.use(cookieParser());
